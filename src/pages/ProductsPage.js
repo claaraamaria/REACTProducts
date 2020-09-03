@@ -1,19 +1,19 @@
 import React, { useState } from "react";
 import MainPageLayout from "../components/MainPageLayout";
-import { Button } from 'antd';
+import { Tabs } from 'antd';
 import 'antd/dist/antd.css';
 
 const ProductsPage = () => {
+  const { TabPane } = Tabs
   const [results, setResults] = useState(null);
 
   const onFetchData = () => {
-    // /http://localhost:1234/products
 
     fetch("http://localhost:1234/products")
       .then((response) => response.json())
       .then((result) => {
         setResults(result);
-        console.log(result);
+       // console.log(result);
       });
   };
 
@@ -26,7 +26,7 @@ const ProductsPage = () => {
       return (
         <div>
           {results.map((item) => (
-            <div>{item.product.furnisseur.nom}</div>
+            <div key={item._id.timestamp}>{item.product.furnisseur.nom}</div>
           ))}
         </div>
       );
@@ -35,7 +35,7 @@ const ProductsPage = () => {
     return null;
   };
 
-  const userName = () => {
+  const productFabricant = () => {
     if (results && results.length === 0) {
       return <h1>NO DATA HERE</h1>;
     }
@@ -44,7 +44,7 @@ const ProductsPage = () => {
       return (
         <div>
           {results.map((item) => (
-            <div>{item.user.nom}</div>
+            <div key={item._id.timestamp}>{(item.product.fabricant.nom) + " & " + (item.product.fabricant.famille)}</div>
           ))}
         </div>
       );
@@ -57,11 +57,10 @@ const ProductsPage = () => {
     <MainPageLayout>
       Here are the products :
       <br />
-      <Button type="primary" onClick={onFetchData}>
-        Fetch Data
-      </Button>
-      {furnisseurName()}
-      {userName()}
+      <Tabs onChange={onFetchData}>
+        <TabPane tab="Furnisseurs" key="1">{furnisseurName()}</TabPane>
+        <TabPane tab="Products" key="2">{productFabricant()}</TabPane>
+      </Tabs>
     </MainPageLayout>
   );
 };
