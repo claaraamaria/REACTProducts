@@ -4,7 +4,6 @@ import ItemCard from "./ItemCard";
 const ItemGrid = ({ data }) => {
   const renderCards = () => {
     return data.map((item) => {
-      console.log(item);
       return (
         <ItemCard
           key={item._id.timestamp}

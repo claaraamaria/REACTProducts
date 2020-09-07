@@ -1,26 +1,21 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import MainPageLayout from "../components/MainPageLayout";
 import { Tabs } from "antd";
 import "antd/dist/antd.css";
-import ItemCard from "../components/Item/ItemCard";
 import ItemGrid from "../components/Item/ItemGrid";
 
 const ProductsPage = () => {
   const { TabPane } = Tabs;
   const [results, setResults] = useState(null);
 
-  const onFetchData = async () => {
-    let result = await fetch("http://localhost:1234/products");
-    setResults(await result.json());
-    // console.log(await result.json());
+  useEffect( () => {
 
-    // fetch("http://localhost:1234/products")
-    //   .then((response) => response.json())
-    //   .then((result) => {
-    //     setResults(result);
-    //     // console.log(result);
-    //   });
-  };
+    async function fetchMyAPI() {
+      let result = await fetch("http://localhost:1234/products");
+      setResults(await result.json());
+    }
+    fetchMyAPI();
+  }, []);
 
   const furnisseurName = () => {
     if (results && results.length === 0) {
@@ -56,7 +51,7 @@ const ProductsPage = () => {
     <MainPageLayout>
       Here are the products :
       <br />
-      <Tabs onChange={onFetchData}>
+      <Tabs defaultActiveKey="2">
         <TabPane tab="Furnisseurs" key="1">
           {furnisseurName()}
         </TabPane>
